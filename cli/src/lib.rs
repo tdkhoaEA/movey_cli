@@ -1,9 +1,19 @@
-use clap::{App, AppSettings, Arg};
+use clap::{App, AppSettings, Arg, Parser};
 // use clap::{crate_version, crate_description, crate_authors};
 
 use core::commands;
 use utils::app_config::AppConfig;
 use utils::error::Result;
+
+pub mod base;
+use base::movey_login::MoveyLogin;
+use base::movey_upload::MoveyUpload;
+
+#[derive(Parser)]
+pub enum Command {
+    #[clap(name = "movey-login")]
+    MoveyLogin(MoveyLogin),
+}
 
 /// Match commands
 pub fn cli_match() -> Result<()> {
@@ -24,6 +34,12 @@ pub fn cli_match() -> Result<()> {
         Some("config") => {
             commands::config()?;
         }
+        Some("movey_login") => {
+            MoveyLogin.execute();
+        },
+        // Some("movey_upload") => {
+        //     MoveyUpload.execute(move_args.package_path)
+        // }
         _ => {
             // Arguments are required by default (in Clap)
             // This section should never execute and thus
@@ -52,8 +68,9 @@ pub fn cli_config() -> Result<clap::ArgMatches> {
         .subcommand(App::new("hazard").about("Generate a hazardous occurance"))
 
         .subcommand(App::new("error").about("Simulate an error"))
-        .subcommand(App::new("config").about("Show Configuration"));
-
+        .subcommand(App::new("config").about("Show Configuration"))
+        .subcommand(App::new("movey_login").about("Login to Movey"))
+        .subcommand(App::new("movey_upload").about("Upload to Movey"));
     // Get matches
     let cli_matches = cli_app.get_matches();
 
