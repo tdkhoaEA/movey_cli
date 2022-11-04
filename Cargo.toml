@@ -1,0 +1,68 @@
+[package]
+name = "movey-cli"
+version = "0.0.1"
+authors = ["khoa.tran <khoa.tran@eastagile.com>"]
+edition = "2018"
+repository = ""
+readme = "README.md"
+license = "MIT"
+keywords = [""]
+description = """
+Your project description.
+"""
+[[bin]]
+name = "cli"
+path = "src/main.rs"
+
+[workspace]
+members = [
+    "utils",
+    "cli",
+    "core",
+]
+
+[dependencies]
+utils = { path = "utils" }
+cli = { path = "cli"}
+core = { path = "core" }
+human-panic = "1.0.3"
+better-panic = "0.2.0"
+log = "0.4.11"
+slog-scope = "4.3.0"
+slog-stdlog = "4.1.0"
+
+[dev-dependencies]
+assert_cmd = "1.0.1"
+predicates = "1.0.5"
+
+[profile.dev]
+opt-level=0
+debug = true
+rpath = false
+lto = false
+debug-assertions = true
+codegen-units = 4
+
+[profile.release]
+opt-level=3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+
+[profile.test]
+opt-level = 1
+debug = true
+rpath = false
+lto = false
+debug-assertions = true
+codegen-units = 4
+
+[profile.bench]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
