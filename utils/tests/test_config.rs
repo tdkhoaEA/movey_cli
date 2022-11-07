@@ -1,6 +1,10 @@
 use utils::app_config::*;
 
+#[cfg(test)]
+use serial_test::serial;
+
 #[test]
+#[serial]
 fn fetch_config() {
     // Initialize configuration
     let config_contents = include_str!("resources/test_config.toml");
@@ -29,6 +33,7 @@ fn verify_get() {
 }
 
 #[test]
+#[serial]
 fn verify_set() {
     // Initialize configuration
     let config_contents = include_str!("resources/test_config.toml");

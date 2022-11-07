@@ -1,12 +1,12 @@
 // Copyright (c) The Move Contributors
 // SPDX-License-Identifier: Apache-2.0
 
-use utils::movey_credential;
-use anyhow::bail;
+use anyhow::{bail, Result};
 use clap::*;
-use utils::env::MOVE_HOME;
 use reqwest::blocking::Client;
 use std::{env, fs::File, path::PathBuf, process::Command};
+use utils::env::MOVE_HOME;
+use utils::movey_credential;
 
 // Metadata that will be collected by Movey
 #[derive(serde::Serialize, Default)]
@@ -19,11 +19,11 @@ pub struct MoveyUploadRequest {
 
 /// Upload the package metadata to Movey.net.
 #[derive(Parser)]
-#[clap(name = "movey-upload")]
+#[clap(name = "upload")]
 pub struct MoveyUpload;
 
 impl MoveyUpload {
-    pub fn execute(self, path: Option<PathBuf>) -> anyhow::Result<()> {
+    pub fn execute(path: Option<PathBuf>) -> Result<()> {
         if let Some(path) = path {
             if path.exists() && path.is_dir() {
                 let _ = env::set_current_dir(&path);
@@ -62,7 +62,8 @@ impl MoveyUpload {
                 }
                 // convert ssh url to https
                 let https_url = if tokens[1].starts_with("git@github.com") {
-                    tokens[1].replace(':', "/").replace("git@", "https://")
+                    let author_slash_repo = tokens[1].split(':').last().unwrap();
+                    format!("https://github.com/{author_slash_repo}")
                 } else {
                     String::from(tokens[1])
                 };

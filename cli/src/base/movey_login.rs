@@ -1,12 +1,12 @@
 // Copyright (c) The Move Contributors
 // SPDX-License-Identifier: Apache-2.0
 
-use utils::movey_credential::read_credential_file;
 use anyhow::{bail, Result};
 use clap::Parser;
 use std::{fs, fs::File, io, path::PathBuf};
 use toml_edit::easy::{map::Map, Value};
 use utils::env::MOVE_HOME;
+use utils::movey_credential::read_credential_file;
 
 #[cfg(debug_assertions)]
 pub const MOVEY_URL: &str = "https://movey-app-staging.herokuapp.com";
@@ -15,16 +15,11 @@ pub const MOVEY_URL: &str = "https://www.movey.net";
 pub const MOVEY_CREDENTIAL_PATH: &str = "/movey_credential.toml";
 
 #[derive(Parser)]
-#[clap(name = "movey-login")]
+#[clap(name = "login")]
 pub struct MoveyLogin;
 
 impl MoveyLogin {
-    pub fn kbbb(self) -> Result<()>{
-        println!("Hello khoaa");
-        Ok(())
-    }
-    
-    pub fn execute(self) -> Result<()> {
+    pub fn execute() -> Result<()> {
         println!(
             "Please paste the API Token found on {}/settings/tokens below",
             MOVEY_URL
@@ -44,7 +39,7 @@ impl MoveyLogin {
                 }
             }
         }
-        Self::save_credential(line, MOVE_HOME.clone())?;
+        MoveyLogin::save_credential(line, MOVE_HOME.clone())?;
         println!("Token for Movey saved.");
         Ok(())
     }
