@@ -30,7 +30,7 @@ pub fn config() -> Result<()> {
 pub fn simulate_error() -> Result<()> {
 
     // Log this Error simulation
-    info!("We are simulating an error");
+    log::info!("We are simulating an error");
 
     // Simulate an error
     error::simulate_error()?;

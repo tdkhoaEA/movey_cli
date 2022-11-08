@@ -1,15 +1,15 @@
 [package]
 name = "core"
 version = "0.0.1"
-authors = ["Abid Omar <contact@omarabid.com>"]
+authors = ["East Agile <open-source@eastagile.com>"]
 description = "The application core code"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 utils = { path = "../utils" }
 
 rand = "0.7.3"
-log = "0.4.11"
+log = "0.4.17"
 
 [dependencies.clap]
 version = "3.0.0-beta.2"

@@ -19,6 +19,7 @@ fn fetch_config() {
 }
 
 #[test]
+#[serial]
 fn verify_get() {
     // Initialize configuration
     let config_contents = include_str!("resources/test_config.toml");
