@@ -1,17 +1,16 @@
 [package]
 name = "movey-cli"
 version = "0.0.1"
-authors = ["khoa.tran <khoa.tran@eastagile.com>"]
-edition = "2018"
+authors = ["East Agile <open-source@eastagile.com>"]
+edition = "2021"
 repository = ""
 readme = "README.md"
-license = "MIT"
+license = "MIT OR Apache-2.0"
 keywords = [""]
-description = """
-Your project description.
-"""
+description = "CLI for movey.net. Coming soon."
+
 [[bin]]
-name = "cli"
+name = "movey"
 path = "src/main.rs"
 
 [workspace]
@@ -26,14 +25,21 @@ utils = { path = "utils" }
 cli = { path = "cli"}
 core = { path = "core" }
 human-panic = "1.0.3"
-better-panic = "0.2.0"
-log = "0.4.11"
-slog-scope = "4.3.0"
-slog-stdlog = "4.1.0"
+better-panic = "0.3.0"
+log = "0.4.17"
+slog-scope = "4.4.0"
+slog-stdlog = "4.1.1"
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.87"
+clap = { version = "3.1.8", features = ["derive"] }
+anyhow = "1.0.66"
+toml_edit =  { version = "0.15.0", features = ["easy"] }
+reqwest = { version = "0.11.12", features = ["blocking", "json"] }
 
 [dev-dependencies]
-assert_cmd = "1.0.1"
-predicates = "1.0.5"
+assert_cmd = "2.0.6"
+predicates = "2.1.2"
+httpmock = "0.6.6"
 
 [profile.dev]
 opt-level=0

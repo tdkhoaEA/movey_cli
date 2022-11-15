@@ -1,18 +1,19 @@
 [package]
 name = "cli"
 version = "0.0.1"
-authors = ["Abid Omar <contact@omarabid.com>"]
-description = "CLI interface"
-edition = "2018"
+authors = ["East Agile <open-source@eastagile.com>"]
+description = "CLI interface for Movey"
+edition = "2021"
 
 [dependencies]
 utils = { path = "../utils" }
 core = { path = "../core" }
-
-[dependencies.clap]
-version = "3.0.0-beta.2"
-features = ["yaml"]
+clap = { version = "3.1.8", features = ["derive", "cargo"] }
+anyhow = "1.0.66"
+toml_edit =  { version = "0.15.0", features = ["easy"] }
+reqwest = { version = "0.11.12", features = ["blocking", "json"] }
+serde = { version = "1.0.147", default-features = false }
 
 [dev-dependencies]
-assert_cmd = "1.0.1"
-predicates = "1.0.5"
+assert_cmd = "2.0.6"
+predicates = "2.1.2"

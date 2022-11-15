@@ -40,6 +40,7 @@ pub enum ErrorKind {
     IoError,
     ClapError,
     LoggerError,
+    AnyhowError,
 }
 
 impl fmt::Display for ErrorKind {
@@ -100,4 +101,13 @@ impl From<log::SetLoggerError> for Error {
             inner: err.context(ErrorKind::LoggerError),
         }
     }
+}
+
+impl From<anyhow::Error> for Error {
+    fn from(err: anyhow::Error) -> Self {
+        eprintln!("{err:?}");
+        Error {
+            inner: Context::from(ErrorKind::AnyhowError),
+        }
+    }   
 }
