@@ -14,6 +14,7 @@ fn main() -> Result<()> {
     #[cfg(not(debug_assertions))]
     {
         setup_panic!();
+        // let _guard = slog_scope::set_global_logger(utils::logger::default_root_logger()?);
     }
 
     // Better Panic. Only enabled *when* debugging.
@@ -35,7 +36,6 @@ fn main() -> Result<()> {
     // the utils crate.
     //
     //utils::logger::setup_logging()?;
-    let _guard = slog_scope::set_global_logger(utils::logger::default_root_logger()?);
     let _log_guard = slog_stdlog::init()?;
 
     // Initialize Configuration

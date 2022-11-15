@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs};
 
-use anyhow::{bail, Context, Result};
+use anyhow::{anyhow, bail, Context, Result};
 use serde::Deserialize;
 use toml_edit::easy::{self, Value};
 
@@ -17,8 +17,7 @@ pub struct MoveyDependencies {
 #[derive(Deserialize, Debug)]
 pub struct MoveyResolver {
     pub resolver: String,
-    pub packages: Option<HashMap<String, Value>>,
-    pub onchain: Option<HashMap<String, Value>>,
+    pub packages: Option<HashMap<String, String>>,
 }
 
 pub struct MovePackageResolver {}
@@ -33,9 +32,9 @@ impl MovePackageResolver {
         Ok(())
     }
 
-    fn parse_deps_from_toml(toml_content: &str) -> Result<HashMap<String, Value>> {
+    fn parse_deps_from_toml(toml_content: &str) -> Result<HashMap<String, String>> {
         let toml = easy::from_str::<Dependencies>(toml_content)
-            .map_err(|e| bail!("Wrong Move.toml format for Movey dependencies. Error: {e}"))?;
+            .map_err(|e| anyhow!("Wrong Move.toml format for Movey dependencies. Error: {e}"))?;
         if toml.dependencies.movey.resolver != "movey" {
             bail!("The CLI only resolve Movey-style dependencies.")
         };
@@ -47,11 +46,6 @@ impl MovePackageResolver {
                 res.insert(key, value);
             }
         };
-        if let Some(onchain_deps) = toml.dependencies.movey.onchain {
-            for (key, value) in onchain_deps {
-                res.insert(key, value);
-            }
-        }
         return Ok(res);
     }
 }
@@ -68,22 +62,18 @@ mod tests {
             version = ""
 
             [dependencies]
-
+            
             [dependencies.movey]
             resolver = "movey"
-
+            
             [dependencies.movey.packages]
-            Sui  = { ns = "sui/stdlib", version = "1.0.0" }
-            Move = "move-language/stdlib"
-
-            [dependencies.movey.onchain]
-            coin = { addr = "0x2", chain = "sui/devnet" }
-            aptos-network-core = "aptos/mainnet"
+            movedemo-ea = "1.0.0"
+            movedemo-ea-02 = "0.5.0"
         "#;
         let result = MovePackageResolver::parse_deps_from_toml(toml_content).unwrap();
-        assert!(result.contains_key("Sui"));
+        assert!(result.contains_key("movedemo-ea"));
 
-        let sui_deps = result.get("Sui").unwrap();
-        assert_eq!(sui_deps.as_table().unwrap().len(), 2)
+        let sui_deps = result.get("movedemo-ea").unwrap();
+        assert!(sui_deps.contains("1.0.0"))
     }
 }
