@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [cli](#cli)
+  - [Installation](#installation)
+  - [run](#run)
+  - [Create alias](#create-alias)
+  - [run to get the output of cli](#run-to-get-the-output-of-cli)
+  - [Output](#output)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # cli
 Resource: https://docs.rs/clap/2.34.0/clap/struct.ArgMatches.html
 
