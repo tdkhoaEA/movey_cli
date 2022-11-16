@@ -4,7 +4,6 @@ extern crate predicates;
 
 use assert_cmd::prelude::*;
 use httpmock::{Method::POST, Mock, MockServer};
-use predicates::prelude::*;
 use serde_json::json;
 use toml_edit::easy::Value;
 
@@ -30,27 +29,11 @@ fn test_cli() {
 }
 
 #[test]
-#[ignore]
 fn test_version() {
-    let expected_version = format!("{CLI_EXE} 0.0.1\n");
+    let expected_version = format!("movey-cli 0.0.1\n");
     let mut cmd = Command::cargo_bin(CLI_EXE).expect("Calling binary failed");
-    cmd.arg("--version").assert().stdout(expected_version);
-}
-
-#[test]
-#[ignore]
-fn test_hazard_exit_code() {
-    let mut cmd = Command::cargo_bin(CLI_EXE).expect("Calling binary failed");
-    cmd.arg("hazard").assert().code(0);
-}
-
-#[test]
-#[ignore]
-fn test_hazard_stdout() {
-    let hazard_predicate =
-        predicate::function(|x: &str| x == "You got it right!\n" || x == "You got it wrong!\n");
-    let mut cmd = Command::cargo_bin(CLI_EXE).expect("Calling binary failed");
-    cmd.arg("hazard").assert().stdout(hazard_predicate);
+    let result = cmd.arg("--version").output().unwrap();
+    assert_eq!(String::from_utf8(result.stdout.to_vec()).unwrap(), expected_version)
 }
 
 const UPLOAD_PACKAGE_PATH: &str = "./tests/upload_tests";

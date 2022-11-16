@@ -4,9 +4,10 @@ use clap::{crate_version, crate_description, crate_authors};
 use core::commands;
 use utils::error::Result;
 
-pub mod base;
+mod base;
 use base::movey_login::MoveyLogin;
 use base::movey_upload::MoveyUpload;
+use base::move_package_resolver::MovePackageResolver;
 
 /// Match commands
 pub fn cli_match() -> Result<()> {
@@ -33,6 +34,9 @@ pub fn cli_match() -> Result<()> {
         Some("upload") => {
             MoveyUpload::execute(None)?
         }
+        Some("move-package-resolver") => {
+            MovePackageResolver::execute()?
+        }
         _ => {
             // Arguments are required by default (in Clap)
             // This section should never execute and thus
@@ -51,7 +55,8 @@ pub fn cli_config() -> Result<clap::ArgMatches> {
         .about(crate_description!())
         .author(crate_authors!("\n"))
         .subcommand(App::new("login").about("Login to Movey"))
-        .subcommand(App::new("upload").about("Upload to Movey"));
+        .subcommand(App::new("upload").about("Upload to Movey"))
+        .subcommand(App::new("move-package-resolver").about("Parse dependencies from Move.toml"));
     // Get matches
     let cli_matches = cli_app.get_matches();
 
